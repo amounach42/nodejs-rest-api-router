@@ -1,6 +1,6 @@
 const http = require("http");
 const { EventEmitter } = require("stream");
-const { sendNotFound, sendServerError } = require("./errors/errors");
+const { sendNotFound, sendServerError } = require("./responseUtils/httpResponses");
 const { getBooks, getBook } = require("./controllers/bookController.js");
 const { match, parseEndpoint } = require("./parser/urlParser");
 
@@ -17,6 +17,7 @@ class Certify extends http.Server {
   }
 
   handleRequest(req, res) {
+     
     const { url, method } = req;
     this.initialRouter.forEach((handler, route) => {
       console.log(`Route: ${route}, Handler: ${handler}`);
@@ -28,7 +29,8 @@ class Certify extends http.Server {
         return
       }
     }
-      sendNotFound(res);
+
+    sendNotFound(res);
   }
   request(req, res) {
     let { url, method } = req;
