@@ -1,5 +1,6 @@
+const url = require('url');
+const books = require('../data/data');
 const Book  = require('../models/bookModel');
-
 //@desc  Gets All Products
 // @route GET /api/products
 async function getBooks(req, res)   {
@@ -14,7 +15,9 @@ async function getBooks(req, res)   {
 
 //@desc  Gets Single Product
 // @route GET /api/product/:id
-async function getBook(req, res, id) {
+async function getBook(req, res) {
+	let parseUrl = url.parse(req.url, true);
+	const id = parseUrl.pathname.split('/')[3];
 	try {
 		const book = await Book.findById(id)
 
