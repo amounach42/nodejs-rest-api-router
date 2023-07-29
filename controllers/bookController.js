@@ -18,21 +18,26 @@ async function getBooks(req, res)   {
   }
 }
 
-//@desc  Gets Single Product
-// @route GET /api/product/:id
+// @desc  Get a specific Book
+// @route GET /api/books/:id
 async function getBook(req, res) {
-	let parseUrl = url.parse(req.url, true);
-	const id = parseUrl.pathname.split('/')[3];
-	try {
-		const book = await Book.findById(id)
-
-		if (!book) {
-			res.writeHead(404, { 'content-type': 'application/json' });
-			res.end(JSON.stringify({ message: 'Book Not Found' }));
-		} else {
-			res.writeHead(200, { 'content-type': 'application/json'});
-			res.end(JSON.stringify(book));
-		}
+  const parsedUrl = url.parse(req.url, true);
+  const id = parsedUrl.pathname.split('/')[3];
+  try {
+    const book = await Book.findById(id);
+    if (!book) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Book Not Found' }));
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(book));
+    }
+  } catch (error) {
+    console.log("Error", error);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Server error' }));
+  }
+}
 
 // @desc  Get a specific Book
 // @route GET /api/books/:id
