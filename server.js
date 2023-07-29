@@ -1,36 +1,68 @@
-const http = require('http');
-const fs = require('fs');
-const books = require('./data/data');
-const { getBooks, getBook } = require('./controllers/bookController.js');
-const { url } = require('inspector');
-const hostname = '127.0.0.1';
+const http = require("http");
+const { EventEmitter } = require("stream");
+const { sendNotFound, sendServerError } = require("./responseUtils/httpResponses");
+const { getBooks, getBook } = require("./controllers/bookController.js");
+const { match, parseEndpoint } = require("./parser/urlParser");
+
+const hostname = "127.0.0.1";
 const port = 3000;
-const router = require('./routes/bookRoutes.js');
 
-const server = http.createServer((req, res) => {
+class Certify extends http.Server {
+  initialRouter = [];
 
-	req.url
-	const {
-		url,
-		method
-	} = req
+  constructor() {
+    super((req, res) => {
+      this.request(req, res);
+    });
+  }
 
-	console.log({ url, method });
-	// router.forward(req, res);
+  handleRequest(req, res) {
+     
+    const { url, method } = req;
+    this.initialRouter.forEach((handler, route) => {
+      console.log(`Route: ${route}, Handler: ${handler}`);
+    });
 
-	if (req.url === '/api/books' && req.method === 'GET'){
-		getBooks(req, res)
-	} else if (req.url.match(/\/api\/books\/([0-9]+)/) && req.method === 'GET') {
-		const id = req.url.split('/')[3]
-		getBook(req, res, id)
-	  } else if (res.url === '/api/books' && req.method === 'POST') {
-		createBook(req, res, id)
-	  } else {
-		res.writeHead(404, { 'Content-type': 'application/json'});
-		res.end(JSON.stringify({message: 'Error: Route not found'}));
-	}
-	});
+    for (const router of this.initialRouter) {
+      if (match(url, router.patterns) && method === router.method) {
+        router.callback(req, res)
+        return
+      }
+    }
 
-server.listen(port,() => {
-	console.log(`Server running at http://${hostname}:${port}/`);
-});
+    sendNotFound(res);
+  }
+  request(req, res) {
+    let { url, method } = req;
+    this.handleRequest(req, res);
+  }
+
+  add(method, path, callback) {
+    this.initialRouter.push(
+      {
+        method, callback,
+        patterns: parseEndpoint(path),
+      }
+    )
+  }
+
+  get(path, callback) {
+    this.add("GET", path, callback);
+  }
+  post(path, callback) {
+    this.add("POST", path, callback);
+  }
+  put(path, callback) {
+    this.add("PUT", path, callback);
+  }
+  delete(path, callback) {
+    this.add("DELETE", path, callback);
+  }
+}
+
+const app = new Certify();
+
+app.get("/api/books/:id", getBook);
+app.get("/api/books", getBooks);
+
+app.listen(4040);
