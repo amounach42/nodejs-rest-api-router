@@ -1,11 +1,11 @@
-const parseEndpoint = (url) => url.split("/")
+export const parseEndpoint = (url) => url.split("/")
 	.filter(segment => segment.length > 0)
 	.map(segment => (segment[0] == ':')
 		? { type: "wildcard" }
 		: { type: "word", word: segment }
 	);
 
-function match(url, patterns) {
+export function match(url, patterns) {
 	const segments = url.split("/").filter(segment => segment.length > 0);
 
 	if (patterns.length != segments.length) {
@@ -19,9 +19,4 @@ function match(url, patterns) {
 		}
 	}
 	return true;
-}
-
-module.exports = {
-	match,
-	parseEndpoint
 }
