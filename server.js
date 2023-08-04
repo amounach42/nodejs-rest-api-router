@@ -1,8 +1,11 @@
-const http = require("http");
-const { EventEmitter } = require("stream");
-const { sendNotFound, sendServerError } = require("./responseUtils/httpResponses");
-const { getBooks, getBook } = require("./controllers/bookController.js");
-const { match, parseEndpoint } = require("./parser/urlParser");
+import http from "http";
+import { sendNotFound, sendServerError } from "./responseUtils/httpResponses.js";
+import { getBooks, getBook, createBook, updateBook, deleteBook } from "./controllers/bookController.js";
+import { match, parseEndpoint } from "./parser/urlParser.js";
+import { PrismaClient } from '@prisma/client';
+import { deleteItem } from "./models/bookModel.js";
+
+const prisma = new PrismaClient()
 
 const hostname = "127.0.0.1";
 const port = 3000;
@@ -17,7 +20,7 @@ class Certify extends http.Server {
   }
 
   handleRequest(req, res) {
-     
+
     const { url, method } = req;
     this.initialRouter.forEach((handler, route) => {
       console.log(`Route: ${route}, Handler: ${handler}`);
@@ -33,7 +36,6 @@ class Certify extends http.Server {
     sendNotFound(res);
   }
   request(req, res) {
-    let { url, method } = req;
     this.handleRequest(req, res);
   }
 
@@ -64,5 +66,8 @@ const app = new Certify();
 
 app.get("/api/books/:id", getBook);
 app.get("/api/books", getBooks);
+app.post("/api/books", createBook);
+app.put("/api/books/:id", updateBook);
+app.delete("/api/books/:id", deleteBook);
 
 app.listen(4040);
