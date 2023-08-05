@@ -3,12 +3,7 @@ import { sendNotFound, sendServerError } from "./responseUtils/httpResponses.js"
 import { getBooks, getBook, createBook, updateBook, deleteBook } from "./controllers/bookController.js";
 import { match, parseEndpoint } from "./parser/urlParser.js";
 import { PrismaClient } from '@prisma/client';
-import { deleteItem } from "./models/bookModel.js";
-
 const prisma = new PrismaClient()
-
-const hostname = "127.0.0.1";
-const port = 3000;
 
 class Certify extends http.Server {
   initialRouter = [];
@@ -20,11 +15,7 @@ class Certify extends http.Server {
   }
 
   handleRequest(req, res) {
-
     const { url, method } = req;
-    this.initialRouter.forEach((handler, route) => {
-      console.log(`Route: ${route}, Handler: ${handler}`);
-    });
 
     for (const router of this.initialRouter) {
       if (match(url, router.patterns) && method === router.method) {
@@ -32,7 +23,6 @@ class Certify extends http.Server {
         return
       }
     }
-
     sendNotFound(res);
   }
   request(req, res) {
@@ -70,4 +60,4 @@ app.post("/api/books", createBook);
 app.put("/api/books/:id", updateBook);
 app.delete("/api/books/:id", deleteBook);
 
-app.listen(4040);
+app.listen(3001);
