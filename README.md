@@ -17,8 +17,8 @@ This project is a simple router built with Node.js, using Prisma to interact wit
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/amounach42/repository.git
+cd repository
 ```
 
 2. Install dependencies:
@@ -89,27 +89,4 @@ The server will be running at http://localhost:4040.
 - **Description:** Delete a specific book by its ID.
 - **Response:** JSON object confirming the successful deletion.
 
-## Contributing
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to submit a pull request or open an issue.
-
-## License
-
-[Specify the license for your project. For example, you can use MIT, Apache, or any other open-source license.]
-
-```
-MIT License
-...
-```
-
-## Acknowledgments
-
-[Optional: Acknowledge any individuals or projects that have inspired or assisted your work.]
-
-## Contact
-
-[Provide your contact information or a way for users to reach out for support or questions.]
-
----
-
-Feel free to customize the template to include any additional details about your project, setup instructions, or explanations of the code. This README will help users understand your project and how to use your custom router with Node.js, Prisma, and PostgreSQL effectively. Good luck with your project!
