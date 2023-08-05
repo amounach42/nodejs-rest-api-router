@@ -48,7 +48,13 @@ Start the server:
 npm start
 ```
 
-The server will be running at http://localhost:4040.
+Build and run the Docker containers:
+
+```bash
+docker compose up --build -d
+```
+
+The server will be running at http://localhost:3001.
 
 ## API Endpoints
 
@@ -88,5 +94,3 @@ The server will be running at http://localhost:4040.
 - **Method:** `DELETE`
 - **Description:** Delete a specific book by its ID.
 - **Response:** JSON object confirming the successful deletion.
-
-
