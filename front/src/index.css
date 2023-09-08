@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
+body {
+  margin: 0;
+  font-family: 'Krona One', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+
+  .image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: 0.3s;
+  }
+
+  section:hover {
+    .image {
+      filter: blur(1.5px);
+    }
+    .bg-div {
+      opacity: 1;
+      animation: identifier 0.3s ease-in-out;
+    }
+  }
+
+  section:not(:hover) {
+    .bg-div {
+      animation: identifier2 0.3s ease-in-out;
+    }
+  }
+
+  .section {
+    width: 300px;
+    aspect-ratio: auto 3 / 4;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .bg-div {
+    opacity: 0;
+    top: 10;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, #000000a6);
+    position: absolute;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .title {
+    color: white;
+    font-family: "Krona One", sans-serif;
+    margin-bottom: 15px;
+    font-weight: bold;
+
+  }
+  .author {
+    color: white;
+    font-family: "Krona One", sans-serif;
+    margin-bottom: 40px;
+  }
+  .author, .title{
+    text-shadow: 1px 2px 8px rgb(0, 0, 0);
+  }
+
+  @keyframes identifier {
+    0% {
+      transform: translateY(50px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes identifier2 {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateY(50px);
+    }
+  }
